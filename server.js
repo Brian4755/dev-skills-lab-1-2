@@ -4,10 +4,7 @@ import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import logger from 'morgan'
-import { skills } from './data/skills-data.js'
-
-// Connect to the database with Mongoose
-
+import methodOverride from 'method-override'
 import('./config/database.js')
 
 // import routers
@@ -18,22 +15,6 @@ import { router as usersRouter } from './routes/skills.js'
 const app = express()
 
 // view engine setup
-
-app.get('/', function(req, res) {
-  res.render('')
-})
-
-// app.get('/', function(req, res) {
-//   res.redirect('/skills')
-// })
-
-app.get('/skills', function(req, res) {
-  res.render('skills/index', {
-    skills: skills
-  })
-})
-
-
 app.set(
   'views',
   path.join(path.dirname(fileURLToPath(import.meta.url)), 'views')
@@ -41,6 +22,12 @@ app.set(
 app.set('view engine', 'ejs')
 
 // middleware
+app.use(function(req, res, next) {
+  req.time = new Date().toLocaleTimeString()
+  next()
+})
+
+
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -49,11 +36,11 @@ app.use(
     path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
   )
 )
+app.use(methodOverride('_method'))
 
 // mounted routers
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
-app.use('/todos', skillsRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

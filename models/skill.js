@@ -3,11 +3,11 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 	
 const skillSchema = new Schema({
-  skill: String,
+  text: String,
   note: String
 })
 
-const Skill = mongoose.model('Skill', todoSchema)
+const Skill = mongoose.model('Skill', skillSchema)
 
 export {
   Skill
