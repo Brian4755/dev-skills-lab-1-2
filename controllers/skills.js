@@ -1,4 +1,4 @@
-import { Skill } from '../models/todo.js'
+import { Skill } from '../models/skill.js'
 
 
 function index(req, res) {
@@ -44,7 +44,7 @@ function show(req, res) {
 }
 
 function deleteSkill(req, res) {
-  Todo.findByIdAndDelete(req.params.id)
+  Skill.findByIdAndDelete(req.params.id)
   .then(skill => {
     res.redirect('/skills')
   })
@@ -70,7 +70,7 @@ function edit(req, res) {
 function update(req, res) {
   req.body.done = !!req.body.done
   Skill.findByIdAndUpdate(req.params.id, req.body, {new: true})
-  .then(todo => {
+  .then(skill => {
     res.redirect(`/skills/${skill._id}`)
   })
   .catch(error => {
